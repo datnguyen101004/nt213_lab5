@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Register">
+
+    <EditText
+        android:layout_marginTop="50dp"
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:hint="username" />
+
+    <EditText
+        android:layout_marginTop="10dp"
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:hint="password" />
+
+    <EditText
+        android:layout_marginTop="10dp"
+        android:id="@+id/matchPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:hint="match password" />
+
+    <Button
+        android:layout_marginTop="20dp"
+        android:id="@+id/btn_register"
+        android:layout_width="200dp"
+        android:layout_marginLeft="100dp"
+        android:layout_height="wrap_content"
+        android:text="Register" />
+</LinearLayout>
