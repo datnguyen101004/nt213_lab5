@@ -10,6 +10,8 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.app.sql.SQLiteConnector;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -18,10 +20,11 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        EditText username = findViewById(R.id.editUsername);
-        EditText password = findViewById(R.id.editPassword);
+        EditText username = findViewById(R.id.username);
+        EditText password = findViewById(R.id.password);
         Button login = findViewById(R.id.btn_login);
         Button register = findViewById(R.id.btn_register);
+        SQLiteConnector db = new SQLiteConnector(this);
 
         register.setOnClickListener(v->{
             Intent intent = new Intent(MainActivity.this, Register.class);
@@ -31,12 +34,12 @@ public class MainActivity extends AppCompatActivity {
         View.OnClickListener loginEvent = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (username.getText().toString().equals("admin") && password.getText().toString().equals("root")){
-                    Intent intent = new Intent(MainActivity.this, User.class);
+                boolean result = db.checkUser(username.getText().toString(), password.getText().toString());
+                if (result){
+                    Intent intent = new Intent(MainActivity.this,User.class);
                     startActivity(intent);
-                }
-                else {
-                    Toast.makeText(MainActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(MainActivity.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
                 }
             }
         };
