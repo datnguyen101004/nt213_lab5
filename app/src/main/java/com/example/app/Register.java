@@ -12,6 +12,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.app.sql.SQLiteConnector;
 import com.example.app.entity.User;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class Register extends AppCompatActivity {
 
     @Override
@@ -38,15 +44,41 @@ public class Register extends AppCompatActivity {
                 Toast.makeText(Register.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
             } else {
                 if (password_text.equals(matchPassword_text)) {
+//                    User user = new User(name_text, email_text, password_text);
+//                    SQLiteConnector db = new SQLiteConnector(Register.this);
+//                    if(db.addUser(user)) {
+//                        Toast.makeText(Register.this, "Add user successfully", Toast.LENGTH_SHORT).show();
+//                    }
                     User user = new User(name_text, email_text, password_text);
-                    SQLiteConnector db = new SQLiteConnector(Register.this);
-                    if(db.addUser(user)) {
-                        Toast.makeText(Register.this, "Add user successfully", Toast.LENGTH_SHORT).show();
-                    }
-                    Intent intent = new Intent(Register.this, MainActivity.class);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(Register.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+
+                    //Retrofit
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl("http://192.168.1.2:8080/") // IP máy tính
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+                    // Tạo interface API
+                    ApiService apiService = retrofit.create(ApiService.class);
+
+                    // Gọi API
+                    Call<User> call = apiService.registerUser(user);
+                    call.enqueue(new Callback<User>() {
+                        @Override
+                        public void onResponse(Call<User> call, Response<User> response) {
+                            if (response.isSuccessful() && response.body() != null) {
+                                Toast.makeText(Register.this, "User registered successfully!", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(Register.this, MainActivity.class);
+                                startActivity(intent);
+                            } else {
+                                Toast.makeText(Register.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<User> call, Throwable t) {
+                            // Xử lý lỗi khi không thể kết nối hoặc lỗi khác
+                            Toast.makeText(Register.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
         });
