@@ -16,7 +16,7 @@
         android:theme="@style/Theme.App"
         tools:targetApi="31">
         <activity
-            android:name=".User"
+            android:name=".UserActivity"
             android:exported="false" />
         <activity
             android:name=".Register"

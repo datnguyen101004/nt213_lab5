@@ -34,59 +34,57 @@ public class MainActivity extends AppCompatActivity {
         EditText password = findViewById(R.id.password);
         Button login = findViewById(R.id.btn_login);
         Button register = findViewById(R.id.btn_register);
-        //SQLiteConnector db = new SQLiteConnector(this);
+        SQLiteConnector db = new SQLiteConnector(this);
 
-        register.setOnClickListener(v->{
+        register.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, Register.class);
             startActivity(intent);
         });
 
-        View.OnClickListener loginEvent = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                boolean result = db.checkUser(username.getText().toString(), password.getText().toString());
-//                if (result){
-//                    Intent intent = new Intent(MainActivity.this,User.class);
-//                    startActivity(intent);
-//                }else{
-//                    Toast.makeText(MainActivity.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
-//                }
-
-                User user = new User();
-                user.setName(username.getText().toString());
-                user.setPassword(password.getText().toString());
-
-                //Retrofit
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("http://192.168.1.2:8080/") // IP máy tính
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-
-                ApiService apiService = retrofit.create(ApiService.class);
-
-                //Gọi api
-                Call<User> call = apiService.loginUser(user);
-                call.enqueue(new Callback<User>() {
-                    @Override
-                    public void onResponse(Call<User> call, Response<User> response) {
-                        if (response.isSuccessful() && response.body() != null) {
-                            Toast.makeText(MainActivity.this, "Login successfully!", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(MainActivity.this, com.example.app.User.class);
-                            startActivity(intent);
-                        } else {
-                            Toast.makeText(MainActivity.this, "Username or password is invalid", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<User> call, Throwable t) {
-                        // Xử lý lỗi khi không thể kết nối hoặc lỗi khác
-                        Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
-                    }
-                });
+        login.setOnClickListener(v->{
+            boolean result = db.checkUser(username.getText().toString(), password.getText().toString());
+            if (result) {
+                Intent intent = new Intent(MainActivity.this, UserActivity.class);
+                startActivity(intent);
+            } else {
+                Toast.makeText(MainActivity.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
             }
-        };
+        });
 
-        login.setOnClickListener(loginEvent);
-    }
+        //Connect API login
+//        login.setOnClickListener(v->{
+//            User user = new User();
+//            user.setName(username.getText().toString());
+//            user.setPassword(password.getText().toString());
+//
+//            //Retrofit
+//            Retrofit retrofit = new Retrofit.Builder()
+//                    .baseUrl("http://192.168.1.2:8080/") // IP máy tính
+//                    .addConverterFactory(GsonConverterFactory.create())
+//                    .build();
+//
+//            ApiService apiService = retrofit.create(ApiService.class);
+//
+//            //Gọi api
+//            Call<User> call = apiService.loginUser(user);
+//            call.enqueue(new Callback<User>() {
+//                @Override
+//                public void onResponse(Call<User> call, Response<User> response) {
+//                    if (response.isSuccessful() && response.body() != null) {
+//                        Toast.makeText(MainActivity.this, "Login successfully!", Toast.LENGTH_SHORT).show();
+//                        Intent intent = new Intent(MainActivity.this, UserActivity.class);
+//                        startActivity(intent);
+//                    } else {
+//                        Toast.makeText(MainActivity.this, "Username or password is invalid", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(Call<User> call, Throwable t) {
+//                    // Xử lý lỗi khi không thể kết nối hoặc lỗi khác
+//                    Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//        });
+    };
 }

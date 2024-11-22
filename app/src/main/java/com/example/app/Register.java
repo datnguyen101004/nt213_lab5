@@ -35,52 +35,72 @@ public class Register extends AppCompatActivity {
         matchPassword = findViewById(R.id.matchPassword);
         btn_register = findViewById(R.id.btn_register);
 
+        String name_text = name.getText().toString();
+        String email_text = email.getText().toString();
+        String password_text = password.getText().toString();
+        String matchPassword_text = matchPassword.getText().toString();
+
         btn_register.setOnClickListener(v-> {
-            String name_text = name.getText().toString();
-            String email_text = email.getText().toString();
-            String password_text = password.getText().toString();
-            String matchPassword_text = matchPassword.getText().toString();
             if (email_text.isEmpty() || password_text.isEmpty() || matchPassword_text.isEmpty()) {
                 Toast.makeText(Register.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
             } else {
                 if (password_text.equals(matchPassword_text)) {
-//                    User user = new User(name_text, email_text, password_text);
-//                    SQLiteConnector db = new SQLiteConnector(Register.this);
-//                    if(db.addUser(user)) {
-//                        Toast.makeText(Register.this, "Add user successfully", Toast.LENGTH_SHORT).show();
-//                    }
                     User user = new User(name_text, email_text, password_text);
-
-                    //Retrofit
-                    Retrofit retrofit = new Retrofit.Builder()
-                            .baseUrl("http://192.168.1.2:8080/") // IP máy tính
-                            .addConverterFactory(GsonConverterFactory.create())
-                            .build();
-                    // Tạo interface API
-                    ApiService apiService = retrofit.create(ApiService.class);
-
-                    // Gọi API
-                    Call<User> call = apiService.registerUser(user);
-                    call.enqueue(new Callback<User>() {
-                        @Override
-                        public void onResponse(Call<User> call, Response<User> response) {
-                            if (response.isSuccessful() && response.body() != null) {
-                                Toast.makeText(Register.this, "User registered successfully!", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(Register.this, MainActivity.class);
-                                startActivity(intent);
-                            } else {
-                                Toast.makeText(Register.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<User> call, Throwable t) {
-                            // Xử lý lỗi khi không thể kết nối hoặc lỗi khác
-                            Toast.makeText(Register.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    SQLiteConnector db = new SQLiteConnector(Register.this);
+                    if (db.addUser(user)) {
+                        Toast.makeText(Register.this, "Add user successfully", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(Register.this, MainActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(Register.this, "Add user failed", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(Register.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
+
+        //Call api register
+//        btn_register.setOnClickListener(v->{
+//            if (email_text.isEmpty() || password_text.isEmpty() || matchPassword_text.isEmpty()) {
+//                Toast.makeText(Register.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
+//            } else {
+//                if (password_text.equals(matchPassword_text)) {
+//                    User user = new User(name_text, email_text, password_text);
+//
+//                    //Retrofit
+//                    Retrofit retrofit = new Retrofit.Builder()
+//                            .baseUrl("http://192.168.1.2:8080/") // IP máy tính
+//                            .addConverterFactory(GsonConverterFactory.create())
+//                            .build();
+//                    // Tạo interface API
+//                    ApiService apiService = retrofit.create(ApiService.class);
+//
+//                    // Gọi API
+//                    Call<User> call = apiService.registerUser(user);
+//                    call.enqueue(new Callback<User>() {
+//                        @Override
+//                        public void onResponse(Call<User> call, Response<User> response) {
+//                            if (response.isSuccessful() && response.body() != null) {
+//                                Toast.makeText(Register.this, "User registered successfully!", Toast.LENGTH_SHORT).show();
+//                                Intent intent = new Intent(Register.this, MainActivity.class);
+//                                startActivity(intent);
+//                            } else {
+//                                Toast.makeText(Register.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Call<User> call, Throwable t) {
+//                            // Xử lý lỗi khi không thể kết nối hoặc lỗi khác
+//                            Toast.makeText(Register.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+//                } else {
+//                    Toast.makeText(Register.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
     }
 }

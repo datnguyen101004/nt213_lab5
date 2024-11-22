@@ -1,5 +1,6 @@
 package com.example.app.sql;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -250,6 +251,7 @@ public class SQLiteConnector extends SQLiteOpenHelper {
 
         return false;
     }
+    @SuppressLint("Range")
     public List<User> getEmail(String username) {
         String[] columns = {
                 COLUMN_USER_EMAIL
