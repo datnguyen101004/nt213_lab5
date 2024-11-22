@@ -35,13 +35,12 @@ public class Register extends AppCompatActivity {
         matchPassword = findViewById(R.id.matchPassword);
         btn_register = findViewById(R.id.btn_register);
 
-        String name_text = name.getText().toString();
-        String email_text = email.getText().toString();
-        String password_text = password.getText().toString();
-        String matchPassword_text = matchPassword.getText().toString();
-
         btn_register.setOnClickListener(v-> {
-            if (email_text.isEmpty() || password_text.isEmpty() || matchPassword_text.isEmpty()) {
+            String name_text = name.getText().toString();
+            String email_text = email.getText().toString();
+            String password_text = password.getText().toString();
+            String matchPassword_text = matchPassword.getText().toString();
+            if (name_text.isEmpty() || email_text.isEmpty() || password_text.isEmpty() || matchPassword_text.isEmpty()) {
                 Toast.makeText(Register.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
             } else {
                 if (password_text.equals(matchPassword_text)) {
@@ -63,6 +62,10 @@ public class Register extends AppCompatActivity {
 
         //Call api register
 //        btn_register.setOnClickListener(v->{
+//        String name_text = name.getText().toString();
+//        String email_text = email.getText().toString();
+//        String password_text = password.getText().toString();
+//        String matchPassword_text = matchPassword.getText().toString();
 //            if (email_text.isEmpty() || password_text.isEmpty() || matchPassword_text.isEmpty()) {
 //                Toast.makeText(Register.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
 //            } else {
